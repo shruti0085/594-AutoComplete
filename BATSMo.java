@@ -1,6 +1,7 @@
 	import java.io.InputStream;
 	import java.io.OutputStream;
-	import java.util.Map;
+import java.util.HashMap;
+import java.util.Map;
 	import java.io.File;
 	
 
@@ -16,52 +17,62 @@
  *            - the type of nodes maintained by the Trie
  *
  */	
-public interface BATSMo extends ITrieConstants 
+public interface BATSMo  
 {
 	
 	//private Trie[] tr;
 	//private HashMap freqT;
 
     /**
-     * Accept a FileReader Object with populated frequencies for words and successors
-     * in order to predict the top 5 suggestions to display
+     * Accept a Trie Object in order to build a Trie Tree of mapped prefix suggestions
      * 
      * 
-     * @param FileReader Object
-     * @return List of 5 characters
+     * @param HashMap of words with frequencies
+     * @param HashMap of mapped word to it's top 5 successor predictions
+     * 
      */
-	public void autocomplete(FileReader fr);
+	public void autocomplete(HashMap<String, Integer> wTable, HashMap<String, HashMap<String, Integer>> predicitons);
+	
+	 /**
+	 * Accept a String that represents the prefix to start searching trie tree
+	 * returns the list of the top 5 suggestions created by autocomplete function above()
+	 * a list of top five suggestions is returned
+	 * 
+	 * @param String
+	 * @return String[] - List of 5 subsequent prefixes
+	 */
+	public <T> T[] allPredictions(String prefix);
 
 	
-    /**
-     * Accept a String that represents the prefix to start searching trie tree
-     * returns the list of the top 5 suggestions created by autocomplete function above()
-     * a list of top five suggestions is returned
-     * 
-     * @param String
-     * @return List of 5 subsequent prefixes
-     */
-	public <T> T[] getMatchSuggestions(String prefix);
-
-
-    /**
-     * Accept a string representation of a whole word and creates a HashMap of Frequencies
-     * returns the list of the top 5 suggestions created by autocomplete function above()
-     * a list of top five suggestions is returned
-     * 
-     * @param String
-     * @return List of 5 subsequent prefixes
-     */
-	public void createHashMap(String word);
-
-
-    /**
-     * Sorts the top 5 suggestion from createHashMap()
-     * 
-     * @param Array of Strings populated from getMatchSuggestions
-     * @return A sorted list of the top 5 word frequencies
-     */
-	public <T> T[] sortByFrequency(T[] top5);
+//    /**
+//     * Accept a String that represents the prefix to start searching trie tree
+//     * returns the list of the top 5 suggestions created by autocomplete function above()
+//     * a list of top five suggestions is returned
+//     * 
+//     * @param String
+//     * @return List of 5 subsequent prefixes
+//     */
+//	public <T> T[] getMatchSuggestions(String prefix);
+//
+//
+//    /**
+//     * Accept a string representation of a whole word and creates a HashMap of Frequencies
+//     * returns the list of the top 5 suggestions created by autocomplete function above()
+//     * a list of top five suggestions is returned
+//     * 
+//     * @param String
+//     * @return List of 5 subsequent prefixes
+//     */
+//	public void createHashMap(String word);
+//
+//
+//    /**
+//     * Sorts the top 5 suggestion from createHashMap()
+//     * 
+//     * @param Array of Strings populated from getMatchSuggestions
+//     * @return A sorted list of the top 5 word frequencies
+//     */
+//	public <T> T[] sortByFrequency(T[] top5);
 }
 
 
