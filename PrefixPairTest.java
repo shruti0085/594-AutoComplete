@@ -16,11 +16,11 @@ public class PrefixPairTest {
 	PrefixPair[] pairs = { a , b , c , d , e };
 	Arrays.sort(pairs, PrefixPair.byFreq());
 	//the array after sorting by frequency is:
-	assertEquals("elefante, 4", pairs[0].toString());
-	assertEquals("banana, 13", pairs[1].toString());
+	assertEquals("donut, 39", pairs[0].toString());
+	assertEquals("cookie, 29", pairs[1].toString());
 	assertEquals("apple, 19", pairs[2].toString());
-	assertEquals("cookie, 29", pairs[3].toString());
-	assertEquals("donut, 39", pairs[4].toString());
+	assertEquals("banana, 13", pairs[3].toString());
+	assertEquals("elefante, 4", pairs[4].toString());
     }
 
     

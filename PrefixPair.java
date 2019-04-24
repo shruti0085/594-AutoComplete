@@ -29,7 +29,7 @@ public class PrefixPair implements Comparable<PrefixPair> {
 	//for sorting by frequency
 	@Override
 	public int compare(PrefixPair o1, PrefixPair o2) {
-	    return o1.frequency - o2.frequency;
+	    return -(o1.frequency - o2.frequency);
 	}
 	
     }
