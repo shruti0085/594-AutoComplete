@@ -1,6 +1,6 @@
+import java.util.Comparator;
 
 public class PrefixPair implements Comparable<PrefixPair> { 
-    //it's really a private class, will be nested in AutoComplete
 
     private String name;
     private int frequency;
@@ -9,16 +9,40 @@ public class PrefixPair implements Comparable<PrefixPair> {
 	name = n;
 	frequency = f;
     }
-
-
-    public Comparable<PrefixPair> byFreq() {
-	// TODO
-	return null;
-
+    
+    public String getName() {
+	return name;
+    }
+    
+    public int getFrequency() {
+	return frequency;
     }
 
+
+    public static Comparator<PrefixPair> byFreq() {
+	return new ByFreq();
+
+    }
+    
+    private static class ByFreq implements Comparator<PrefixPair>{
+
+	//for sorting by frequency
+	@Override
+	public int compare(PrefixPair o1, PrefixPair o2) {
+	    return o1.frequency - o2.frequency;
+	}
+	
+    }
+
+
+    //for sorting lexicographically
     @Override
     public int compareTo(PrefixPair o) {
-	return frequency - o.frequency;
+	return (name.compareTo(o.name));
+    }
+    
+    @Override
+    public String toString() {
+        return name + ", " + frequency;
     }
 }
