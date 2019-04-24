@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * TrieNode in a general trie, each representing a character. Each node will keep
  * track of its 26 possible children and 
@@ -8,16 +10,21 @@
  */
 public class TrieNode {
 	char value;
-	TrieNode[] children;
+	HashMap<Character, TrieNode> children;
 	boolean lastNode;
 	
 	/**
 	 * Constructor to create a new TrieNode given a character to store in it 
 	 * @param value -character to be stored
 	 */
-	private TrieNode(char value){
+	public TrieNode(char value){
 		this.value = value;
-		children = new TrieNode[26];
+		children = new HashMap<>();
+		lastNode = false;
+	}
+	
+	public TrieNode() {
+		children = new HashMap<>();
 		lastNode = false;
 	}
 	/**
@@ -38,14 +45,14 @@ public class TrieNode {
 	 * Returns the children for the TrieNode
 	 * @return children
 	 */
-	public TrieNode[] getChildren() {
+	public HashMap<Character, TrieNode> getChildren() {
 		return children;
 	}
 	/**
 	 * Sets the children for given TrieNode
 	 * @param children
 	 */
-	public void setChildren(TrieNode[] children) {
+	public void setChildren(HashMap<Character, TrieNode> children) {
 		this.children = children;
 	}
 	/**

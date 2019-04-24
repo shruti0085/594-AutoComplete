@@ -14,9 +14,10 @@ public interface ITrie {
 	 *  if string is not present in the Trie, insert it 
 	 *  The first step should be finding the longest 
 	 *  prefix of key already in the trie (use getPrefixNode() below).  
-	 *   Then add TrieNodes in such a way that the key is inserted.
+	 *  Then add TrieNodes in such a way that the key is inserted.
+	 *  @param word
 	 */
-	public void insert();
+	public void insert(String word);
 	/**
 	 * Search for the given string prefix in the Trie.
 	 * If present, return root as TrieNode containing the prefix,
