@@ -26,11 +26,11 @@ public class PrefixPairTest {
     
     @Test //to test lexicographic sorting
     public void anotherTest() {
-	PrefixPair a = new PrefixPair ("apple", 19);
-	PrefixPair b = new PrefixPair ("banana", 13);
+	PrefixPair a = new PrefixPair ("donut", 19);
+	PrefixPair b = new PrefixPair ("elefante", 13);
 	PrefixPair c = new PrefixPair ("cookie", 29);
-	PrefixPair d = new PrefixPair ("donut", 39);
-	PrefixPair e = new PrefixPair ("elefante", 4);
+	PrefixPair d = new PrefixPair ("apple", 39);
+	PrefixPair e = new PrefixPair ("banana", 4);
 	PrefixPair[] pairs = { a , b , c , d , e };
 	Arrays.sort(pairs);
 	//the array after sorting lexicographically is:
@@ -40,6 +40,5 @@ public class PrefixPairTest {
 	assertEquals("donut", pairs[3].getName());
 	assertEquals("elefante", pairs[4].getName());
     }
-    
-    
+ 
 }
