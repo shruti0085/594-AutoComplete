@@ -1,7 +1,5 @@
-package newAuto;
-
 /**
- * @author add the whole team later
+ * @author Alexandra Rumyantseva
  *
  * Description:  a data type that provides autocomplete functionality using
  * 				 given text as training. Includes {@code Trie}, 
