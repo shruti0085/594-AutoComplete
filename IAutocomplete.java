@@ -3,6 +3,9 @@ package newAuto;
 /**
  * @author add the whole team later
  *
+ * Description:  a data type that provides autocomplete functionality using
+ * 				 given text as training. Includes {@code Trie}, 
+ * 				 {@code PrefixPair}, and {@code FileRider} data structures.
  */
 public interface IAutocomplete {
 	/**

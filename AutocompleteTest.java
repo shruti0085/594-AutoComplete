@@ -70,6 +70,11 @@ class AutocompleteTest {
 		resultApp = auto.allPredictions("apple pie p") ;
 		String[] wantApp5 = {"please"} ;
 		assertEquals(wantApp5, resultApp) ;
+		
+		// test empty input
+		resultApp = auto.allPredictions("") ;
+		String[] wantApp6 = new String[0] ;
+		assertEquals(wantApp6, resultApp) ;
 	}
 
 }
