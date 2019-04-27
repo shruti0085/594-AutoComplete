@@ -7,16 +7,25 @@ import java.util.HashMap;
 import org.junit.Test;
 
 
-
+/**
+ * Test class for TrieNode
+ * @author sinha
+ *
+ */
 public class TrieNodeTest {
 	
+	/**
+	 * check get and set value method
+	 */
 	@Test
 	public void valueTest(){
 		TrieNode tr = new TrieNode();
 		tr.setValue('a');
 		assertEquals('a',tr.getValue());
 	}
-	
+	/**
+	 * check get and set lastNode method
+	 */
 	@Test
 	public void lastNodeTest(){
 		TrieNode tr = new TrieNode('a');
@@ -26,7 +35,9 @@ public class TrieNodeTest {
 		
 		
 	}
-	
+	/**
+	 * check get and set children method
+	 */
 	@Test
 	public void childrenTest(){
 		TrieNode tr = new TrieNode('a');

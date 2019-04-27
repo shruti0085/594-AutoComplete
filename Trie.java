@@ -11,10 +11,16 @@ public class Trie implements ITrie{
 	Trie(char c) {
 		root = new TrieNode(c);
 	}
-
+   
+	/** Insert a word into the trie.
+	 *  if string is null return IllegalArgumentException
+	 *  if string is not present in the Trie, insert it 
+	 *  @param word
+	 */
+     
 	@Override
 	public void insert(String word) {
-		if(word==null) {
+		if(word==null || word.equals("")) {
 			throw new IllegalArgumentException();
 		}
 		word =  word.toLowerCase();
@@ -44,10 +50,19 @@ public class Trie implements ITrie{
 		// TODO Auto-generated method stub
 		
 	}
-
+	/**
+	 * Search for the given string prefix in the Trie.
+	 * If present, return last TrieNode containing the prefix,
+	 * if not present or string is null or empty, return null
+	 * @param prefix
+	 * @return TrieNode containing the prefix
+	 */
 	@Override
 	public TrieNode search(String prefix) {
 		// TODO Auto-generated method stub
+		if(prefix==null || prefix.equals("")) {
+			return null;
+		}
 		HashMap<Character, TrieNode> children = root.getChildren();
 		TrieNode pre = root;
 		for(int i =1;i< prefix.length();i++) {
@@ -61,11 +76,18 @@ public class Trie implements ITrie{
 		}
 		return pre;
 	}
-
+	/** 
+	 * Returns list of predictions traversing from the given TrieNode to get to all children 
+	 * which are lastNodes, thus returning all words present in the trie in an ArrayList<String>
+	 * If there are no children from the given node or node is null, return null
+	 * 
+	 * */
 	@Override
 	public ArrayList<String> listOfPredictions(TrieNode node) {
 		String str = "";
-		
+		if(node==null) {
+			return null;
+		}
 		ArrayList<String> predict = listPredictionsHelper(node, str);
 		if(predict.size() ==0) {
 			return null;
@@ -74,7 +96,13 @@ public class Trie implements ITrie{
 		// TODO Auto-generated method stub
 		
 	}
-	
+	/**
+	 * Helper function for listOfPredictions function to get all predicted words
+	 * given TrieNode
+	 * @param node- TrieNode whose leaves would be returned
+	 * @param s- string to make words using characters from each node
+	 * @return ArrayList<String> predicted words
+	 */
 	private ArrayList<String> listPredictionsHelper(TrieNode node, String s){
 		
 		TrieNode root = node;
