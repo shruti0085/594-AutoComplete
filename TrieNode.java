@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 /**
  * TrieNode in a general trie, each representing a character. Each node will keep
- * track of its 26 possible children and 
+ * track of its children in a hashmap and 
  * additional valid state if it is the last character of a word.
  * 
  * @author Shruti Sinha
