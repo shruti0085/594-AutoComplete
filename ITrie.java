@@ -24,10 +24,14 @@ public interface ITrie {
 	 */
 	public TrieNode search(String prefix);
 	/** 
-	 * Returns list of predictions traversing from the given TrieNode to get to all children 
-	 * which are lastNodes, thus returning all words present in the trie in an ArrayList<String>
-	 * If there are no children from the given node or the node is null, return null
-	 * 
+	 * Returns list of predictions for a given prefix by finding the TrieNode using search function
+	 * and traversing from the given TrieNode to get to all children 
+	 * which are lastNodes, thus returning all words present in the Trie for given prefix in an ArrayList<String>
+	 * If there are no children from the given node, return null
+	 * if the prefix string is empty or null, return null
+	 * if the search function returns null, return null
+	 * @param prefix : string for which all predictions to be found
+	 * @return predict : arraylist of all predictions
 	 * */
-	public ArrayList<String> listOfPredictions(TrieNode node);
+	public ArrayList<String> listOfPredictions(String prefix);
 }

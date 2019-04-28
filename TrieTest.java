@@ -87,8 +87,7 @@ public class TrieTest {
 	}
 	
 	/**
-	 * test to check ListOfPrediction function to get all words by traversing the 
-	 * trie from given node
+	 * test to check ListOfPrediction function to get all words for given prefix 
 	 */
 	@Test
 	public void listPredictTest(){
@@ -99,20 +98,23 @@ public class TrieTest {
 		prefixTrie.insert(str1);
 		prefixTrie.insert(str2);
 		prefixTrie.insert(str3);
-		TrieNode prefixTrieNode = prefixTrie.search("a");
-		ArrayList<String> predict = prefixTrie.listOfPredictions(prefixTrieNode);
-		assertEquals(3,prefixTrie.listOfPredictions(prefixTrieNode).size());
+		assertEquals(2,prefixTrie.listOfPredictions("app").size());
+
 	}
 	/**
 	 * test to check listOfPrediction function returns null when
-	 *  no words can be found by traversing the Trie from given node
-	 *  or when node is null
+	 *  no words can be found by traversing the Trie for given prefix
+	 *  or when prefix is null or empty, or when search returns a null
 	 */
 	@Test
 	public void listPredictTest2(){
 		Trie prefixTrie = new Trie('a');
-		ArrayList<String> predict = prefixTrie.listOfPredictions(new TrieNode('a'));	
+		
+		ArrayList<String> predict = prefixTrie.listOfPredictions("a");	
 		assertNull(predict);
+		assertNull(prefixTrie.listOfPredictions("b"));
+		assertNull(prefixTrie.listOfPredictions(""));
 		assertNull(prefixTrie.listOfPredictions(null));
+		assertNull(prefixTrie.listOfPredictions("aq"));
 	}
 }

@@ -77,17 +77,28 @@ public class Trie implements ITrie{
 		return pre;
 	}
 	/** 
-	 * Returns list of predictions traversing from the given TrieNode to get to all children 
-	 * which are lastNodes, thus returning all words present in the trie in an ArrayList<String>
-	 * If there are no children from the given node or node is null, return null
-	 * 
+	 * Returns list of predictions for a given prefix by finding the TrieNode using search function
+	 * and traversing from the given TrieNode to get to all children 
+	 * which are lastNodes, thus returning all words present in the trie for given prefix in an ArrayList<String>
+	 * If there are no children from the given node, return null
+	 * if the prefix string is empty or null, return null
+	 * if the search function returns null, return null
+	 * @param- prefix : string for which all predictions to be found
+	 * @return : predict: arraylist of all predictions
 	 * */
 	@Override
-	public ArrayList<String> listOfPredictions(TrieNode node) {
-		String str = "";
-		if(node==null) {
+	public ArrayList<String> listOfPredictions(String prefix) {
+		
+		if(prefix==null || prefix.equals("")) {
 			return null;
 		}
+		
+		TrieNode node = search(prefix);
+		if(node == null) {
+			return null;
+		}
+		String str = "";
+		str = str + prefix.substring(0,prefix.length()-1);
 		ArrayList<String> predict = listPredictionsHelper(node, str);
 		if(predict.size() ==0) {
 			return null;
@@ -98,7 +109,7 @@ public class Trie implements ITrie{
 	}
 	/**
 	 * Helper function for listOfPredictions function to get all predicted words
-	 * given TrieNode
+	 * given TrieNode for a prefix
 	 * @param node- TrieNode whose leaves would be returned
 	 * @param s- string to make words using characters from each node
 	 * @return ArrayList<String> predicted words
