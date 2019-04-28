@@ -11,7 +11,7 @@ public interface ITrie {
 	
 	/** Insert a word into the trie.
 	 *  if string is null or empty return IllegalArgumentException
-	 *  if string is not present in the Trie, insert it 
+	 *  if string is not present in the Trie, insert it,else return 
 	 *  @param word
 	 */
 	public void insert(String word);

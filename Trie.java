@@ -13,8 +13,9 @@ public class Trie implements ITrie{
 	}
    
 	/** Insert a word into the trie.
-	 *  if string is null return IllegalArgumentException
-	 *  if string is not present in the Trie, insert it 
+	 *  if string is null or empty return IllegalArgumentException
+	 *  if string is not present in the Trie, insert it ,
+	 *  else if found make the lastNode containing the prefix to true and return 
 	 *  @param word
 	 */
      
@@ -48,7 +49,7 @@ public class Trie implements ITrie{
 			
 		}
 		// TODO Auto-generated method stub
-		
+		return;
 	}
 	/**
 	 * Search for the given string prefix in the Trie.
@@ -83,7 +84,7 @@ public class Trie implements ITrie{
 	 * If there are no children from the given node, return null
 	 * if the prefix string is empty or null, return null
 	 * if the search function returns null, return null
-	 * @param- prefix : string for which all predictions to be found
+	 * @param- prefix : string for which all predictions needs to be found
 	 * @return : predict: arraylist of all predictions
 	 * */
 	@Override
@@ -110,7 +111,7 @@ public class Trie implements ITrie{
 	/**
 	 * Helper function for listOfPredictions function to get all predicted words
 	 * given TrieNode for a prefix
-	 * @param node- TrieNode whose leaves would be returned
+	 * @param node- TrieNode from which trie would be traversed to get full words 
 	 * @param s- string to make words using characters from each node
 	 * @return ArrayList<String> predicted words
 	 */
