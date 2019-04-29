@@ -1,5 +1,3 @@
-package newAuto;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
@@ -24,7 +22,7 @@ class AutocompleteTest {
 		appleSuccessors.put("please", 1) ;
 		
 		HashMap<String, Integer> applySuccessors = new HashMap<String, Integer> () ;
-		appleSuccessors.put("please", 1) ;
+		applySuccessors.put("please", 1) ;
 		
 		HashMap<String, Integer> juiceSuccessors = new HashMap<String, Integer> () ;
 		juiceSuccessors.put("is", 3) ;
@@ -45,36 +43,50 @@ class AutocompleteTest {
 		successors.put("juice", juiceSuccessors) ;
 		successors.put("please", pleaseSuccessors) ;
 		successors.put("pie", pieSuccessors) ;
-		successors.put("is", isSuccessors) ;
-		
+		successors.put("is", isSuccessors) ;		
 		
 		Autocomplete auto = new Autocomplete(wTable, successors) ;
 		
 		String[] resultApp = auto.allPredictions("app") ;
 		String[] wantApp = {"apple", "apply"} ;
-		assertEquals(wantApp, resultApp) ;
+		System.out.println("app");
+		for (int i = 0; i < resultApp.length; i++) {
+			assertEquals(wantApp[i], resultApp[i]) ;
+		}
 		
 		resultApp = auto.allPredictions("apple ") ;
 		String[] wantApp2 = {"juice", "pie", "please"} ;
-		assertEquals(wantApp2, resultApp) ;
+		System.out.println("apple ");
+		for (int i = 0; i < resultApp.length; i++) {
+			assertEquals(wantApp2[i], resultApp[i]) ;
+		}
 		
 		resultApp = auto.allPredictions("apple p") ;
 		String[] wantApp3 = {"pie", "please"} ;
-		assertEquals(wantApp3, resultApp) ;
+		System.out.println("apple p");
+		for (int i = 0; i < resultApp.length; i++) {
+			assertEquals(wantApp3[i], resultApp[i]) ;
+		}
 		
-		resultApp = auto.allPredictions("apple pie") ;
+		resultApp = auto.allPredictions("apple pie ") ;
 		String[] wantApp4 = {} ;
-		assertEquals(wantApp4, resultApp) ;
+		for (int i = 0; i < resultApp.length; i++) {
+			assertEquals(wantApp4[i], resultApp[i]) ;
+		}
 		
-		// TO DO: count for cases "pie pie" - should not be there
 		resultApp = auto.allPredictions("apple pie p") ;
 		String[] wantApp5 = {"please"} ;
-		assertEquals(wantApp5, resultApp) ;
+		for (int i = 0; i < resultApp.length; i++) {
+			assertEquals(wantApp5[i], resultApp[i]) ;
+		}
 		
 		// test empty input
 		resultApp = auto.allPredictions("") ;
 		String[] wantApp6 = new String[0] ;
-		assertEquals(wantApp6, resultApp) ;
+		for (int i = 0; i < resultApp.length; i++) {
+			assertEquals(wantApp6[i], resultApp[i]) ;
+		}
+
 	}
 
 }
