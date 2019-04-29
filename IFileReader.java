@@ -31,7 +31,7 @@ public interface IFileReader {
     /**
      * Creates mapping of word to its successor and how frequently this pairing occurs
      * @param word a word in the file
-     * @param previous the word that precedes {@link word}
+     * @param previous the word that precedes param word
      */
     public void makeSuccessorMap (String word, String previous);
 
