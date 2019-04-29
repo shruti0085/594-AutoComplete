@@ -56,7 +56,7 @@ public class FileReader implements IFileReader {
 	Scanner sc = new Scanner(new File(filename));
 
 	while(sc.hasNext()) {
-	    String line = sc.next().replace(".", " .").replace("!", " !").replace("?", " ?");
+	    String line = sc.next().replace(".", " . ").replace("!", " ! ").replace("?", " ? ");
 	    //above, we add space around the punctuation, so the punc'n can be considered a "word"
 	    String[] tokens = line.split(" ");
 	    for(String token : tokens){
