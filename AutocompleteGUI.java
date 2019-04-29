@@ -1,7 +1,5 @@
 import java.io.FileNotFoundException;
 
-//import java.io.FileNotFoundException;
-
 /******************************************************************************
  *  Compilation:  javac AutocompleteGUI.java
  *  Execution:    java  AutocompleteGUI input.txt k
@@ -87,8 +85,8 @@ public class AutocompleteGUI extends JFrame {
     // for serializable classes
     private static final long serialVersionUID = 1L;
     
-    private static final int DEF_WIDTH  = 1000; // width of the GUI window
-    private static final int DEF_HEIGHT = 600; // height of the GUI window
+    private static final int DEF_WIDTH  = 850; // width of the GUI window
+    private static final int DEF_HEIGHT = 400; // height of the GUI window
 
     // URL prefix for searches
     private static final String SEARCH_URL = "https://www.google.com/search?q=";
@@ -123,8 +121,6 @@ public class AutocompleteGUI extends JFrame {
 
 
         JLabel textLabel = new JLabel("Search query:");
-        textLabel.setFont(
-                textLabel.getFont().deriveFont(Font.PLAIN, 20));
 
         // Define the layout of the window
         layout.setHorizontalGroup(
@@ -206,18 +202,12 @@ public class AutocompleteGUI extends JFrame {
 
             GroupLayout layout = new GroupLayout(this);
             this.setLayout(layout);
-            // create the drop-down menu items
-            int fontsize = 20;
-            int cellHeight = 30;
+            
             // create the search text, and allow the user to interact with it
             searchText = new JTextField(DEF_COLUMNS);
             searchText.setMaximumSize(new Dimension(
                     searchText.getMaximumSize().width, 
                     searchText.getPreferredSize().height));
-            searchText.setFont(
-                    searchText.getFont().deriveFont(Font.PLAIN, fontsize));
-
-            
             searchText.getInputMap().put(
                     KeyStroke.getKeyStroke("UP"),   "none");
             searchText.getInputMap().put(
@@ -239,7 +229,9 @@ public class AutocompleteGUI extends JFrame {
                     BorderFactory.createEmptyBorder(0, 0, 0, 0));
             searchTextPanel.setLayout(new GridLayout(1, 1));
             
-           
+            // create the drop-down menu items
+            int fontsize = 13;
+            int cellHeight = 20;
             
             // suggestions = new JList<String>(results);
             suggestions = new JList(results);
@@ -269,9 +261,9 @@ public class AutocompleteGUI extends JFrame {
                                     0, selection.indexOf("<td width="));
                         selection = selection.replaceAll("\\<.*?>", "");
                         searchText.setText(selection);
-                        getSuggestions(selection);
+                        getSuggestions(selection+" ");
                     }
-                    searchOnline(searchText.getText());
+                    //searchOnline(searchText.getText());
                 }  
             };
             Action moveSelectionUp =  new AbstractAction() {
@@ -369,11 +361,21 @@ public class AutocompleteGUI extends JFrame {
                                 int index = theList.locationToIndex(
                                         mouseEvent.getPoint()); 
                                 if (index >= 0) {
-                                    String selection = getSelectedText();
-                                    searchText.setText(selection);
-                                    String text = searchText.getText();
-                                    getSuggestions(text);
-                                    searchOnline(searchText.getText());
+                                    String selection = getSelectedText(); 
+                                    if (selection.charAt(selection.length()-1) == '0')
+                                    	selection = selection.substring(0, selection.length()-1) ;
+                                    System.out.println(selection) ;
+                                    String current = searchText.getText() ;
+                                    // find index of the first space from the end
+                                    int i = current.length()-1 ;
+                                    for ( i = current.length()-1 ; i >= 0; i--) {
+                                    	if (current.charAt(i) == ' ') break ;
+                                    }
+                                    current = current.substring(0, i+1) ;
+                                    searchText.setText(current+selection+" ");
+                                    String text = selection ; //searchText.getText();
+                                    getSuggestions(text+" ");
+                                    //searchOnline(searchText.getText());
                                 }
                             }
                         }
@@ -404,11 +406,11 @@ public class AutocompleteGUI extends JFrame {
                                 int index = theList.locationToIndex(
                                         mouseEvent.getPoint()); 
                                 if (index >= 0) {
-                                    String selection = getSelectedText();
+                                    String selection = getSelectedText(); // adds space
                                     searchText.setText(selection);
-                                    String text = searchText.getText();
+                                    String text = selection ; //searchText.getText();
                                     getSuggestions(text);
-                                    searchOnline(searchText.getText());
+                                    //searchOnline(searchText.getText());
                                 }
                             }
                         }
@@ -457,10 +459,10 @@ public class AutocompleteGUI extends JFrame {
             searchText.addActionListener(
                     new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            String selection = getSelectedText();
+                            String selection = getSelectedText(); // adds space
                             searchText.setText(selection);
                             getSuggestions(selection);
-                            searchOnline(searchText.getText());
+                            //searchOnline(searchText.getText());
                         }
                     });
             
@@ -598,15 +600,14 @@ public class AutocompleteGUI extends JFrame {
             }
         }
 
-        // bring the clicked suggestion up to the Search bar and search it
+        // add space to clicked suggestion 
         public String getSelectedText() {
             if (!suggestions.isSelectionEmpty()) {
                 String selection = (String) suggestions.getSelectedValue();
-                if (displayWeights) {
-                    selection = selection.substring(0, selection.indexOf("<td width="));
-                }
+
                 selection = selection.replaceAll("\\<.*?>", "");
                 selection = selection.replaceAll("^[ \t]+|[ \t]+$", "");
+                System.out.println("inside getSelectedText() selection is" + selection) ;
                 return selection;
             }
             else {
@@ -615,38 +616,6 @@ public class AutocompleteGUI extends JFrame {
         }
         public String getSearchText() {
             return searchText.getText();
-        }
-    }
-
-    /**
-     * Creates a URI from the user-defined string and searches the web with the
-     * selected search engine
-     * Opens the default web browser (or a new tab if it is already open)
-     * @param s string to search online for
-     */
-    private void searchOnline(String s) {
-
-        // create the URL
-        URI searchAddress = null;
-        try {
-            URI tempAddress = new URI(SEARCH_URL + URLEncoder.encode(s.trim(), "UTF-8"));
-            searchAddress = new URI(tempAddress.toASCIIString()); // Hack to handle Unicode
-        }
-        catch (URISyntaxException e2) {
-            e2.printStackTrace();
-            return;
-        }
-        catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        // open the URL in the browser
-        try {
-            Desktop.getDesktop().browse(searchAddress);
-        }
-        catch (IOException e1) {
-            e1.printStackTrace();
         }
     }
 
@@ -665,7 +634,6 @@ public class AutocompleteGUI extends JFrame {
                         try {
 							new AutocompleteGUI(filename).setVisible(true);
 						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
                     }
