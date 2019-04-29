@@ -63,9 +63,20 @@ public class Autocomplete implements IAutocomplete {
 			HashMap<String, Integer> hashScsrs = before.get(word) ;
 			PrefixPair[] arrScsrs = convertToPrefixPair(hashScsrs) ;
 			// sort lexicographically
-			Arrays.sort(arrScsrs); 
+			Arrays.sort(arrScsrs);
+			if (word.equals("to")) {
+				System.out.println("successors for to ") ;
+				for (int i = 0; i < arrScsrs.length; i++)
+					System.out.println(arrScsrs[i].getName()) ;
+			}
+				
 			successorMap.put(word, arrScsrs) ;
-		}	
+		}
+		
+//		PrefixPair[] getsrs = successorMap.get("to") ;
+//		System.out.println("GET  from map successors for to ") ;
+//		for (int i = 0; i < getsrs.length; i++)
+//			System.out.println(getsrs[i].getName()) ;
 	}
 	
 //	// temp function for debbugging
@@ -116,8 +127,12 @@ public class Autocomplete implements IAutocomplete {
 			PrefixPair[] succ = successorMap.get(word) ;
 			// sort them in descending order of frequency
 			String[] result = new String[0] ;
-			if (succ != null)
-				result = sortSuccessorsByFreq(succ, -1) ;
+			
+			if (succ != null) {
+				// make copy of succ
+				PrefixPair[] succCopy = Arrays.copyOf( succ, succ.length);
+				result = sortSuccessorsByFreq(succCopy, -1) ;
+			}
 			return result ;
 		}
 		
@@ -131,7 +146,7 @@ public class Autocomplete implements IAutocomplete {
 		}
 		
 		int l = 0 ; // how many will be returned from prev successors
-		String[] result1 = new String[0] ; // suggestions using prev successors
+		String[] result1 = null ; // suggestions using prev successors
 		if (isWord(prev)) {
 						
 			// get successor suggestions for prev
@@ -140,32 +155,57 @@ public class Autocomplete implements IAutocomplete {
 			// out of them get only those that start with prefix word
 			// find first index of PP that  starts with prefix
 			if (prevMatches != null) {
-			int first = firstIndexOf(0, prevMatches.length-1, prevMatches, word) ;
-			// find last index of PP that  starts with prefix
-			int last = lastIndexOf(0, prevMatches.length-1, prevMatches, word) ;
+				System.out.println("successors of prev word (before sorting by freq)  "+prev);
+				for (int i = 0; i < prevMatches.length; i++) {
+					System.out.println(prevMatches[i].getName());
+				}
+				int first = firstIndexOf(0, prevMatches.length-1, prevMatches, word) ;
+				// find last index of PP that  starts with prefix
+				int last = lastIndexOf(0, prevMatches.length-1, prevMatches, word) ;
+				System.out.println("first index is  "+first+" last index is "+last);
 			
-			if ((first != -1) && (last != -1)) {
-				PrefixPair[] sPrevMatches = Arrays.copyOfRange(prevMatches, first, last) ;
-
-				result1 = sortSuccessorsByFreq(sPrevMatches, -1) ;
-				l = result1.length ;
-				// check if we already found enough
-				if (l == nSuggestions)
-					return result1 ;
-			}
+				if ((first != -1) && (last != -1)) {
+					PrefixPair[] sPrevMatches = Arrays.copyOfRange(prevMatches, first, last+1) ;
+					System.out.println("sPrevMatches has size "+sPrevMatches.length);
+					result1 = sortSuccessorsByFreq(sPrevMatches, -1) ;
+					System.out.println("result1 got assigned and has size "+result1.length);
+					l = result1.length ;
+					// check if we already found enough
+					if (l == nSuggestions)
+						return result1 ;
+				}
 			}
 		}	
 		// if not found enough look in trie for prefix
 		int remainder = nSuggestions - l ;
 			
+		if ((result1 != null)&&(result1.length != 0)) {
+			System.out.println("successors of prev word (after sorting by freq "+prev);
+			for (int i = 0; i < result1.length; i++) {
+				System.out.println(result1[i]);
+			}
+		}
 		String[] result2 = getMatchSuggestions(word, result1, remainder, prev) ;
-			
-		// combine results 1 and 2 
-		int newLen = result1.length + result2.length ;
+		
+		if (result2.length != 0) {
+			System.out.println("results from trie for word  "+word);
+			for (int i = 0; i < result2.length; i++) {
+				System.out.println(result2[i]);
+			}
+		}
+		
+		// combine results 1 and 2
+		int newLen = 0 ;
+		if (result1 != null)
+			newLen = result1.length + result2.length ;
+		else
+			newLen = result2.length ;
 		String[] result = new String[newLen] ; 
 		int i = 0 ;
-		for (i = 0; i < result1.length; i++) {
-			result[i] = result1[i] ;
+		if (result1 != null) {
+			for (i = 0; i < result1.length; i++) {
+				result[i] = result1[i] ;
+			}
 		}
 		for (int j = 0; j < result2.length; j++) {
 			result[i] = result2[j] ;
@@ -263,8 +303,10 @@ private int  lastIndexOf(int low, int high, PrefixPair[] arr, String prefix) {
 	}
 	
 	private String[] sortSuccessorsByFreq(PrefixPair[] succ, int howMany) {
+		System.out.println("in sortSuccessorsByFreq()");
 		Comparator<PrefixPair> comparator = PrefixPair.byFreq();
 		Arrays.sort(succ, comparator);
+		
 		// make a String array of necessary size and return it
 		int l ;
 		if (howMany == -1) {
@@ -275,7 +317,7 @@ private int  lastIndexOf(int low, int high, PrefixPair[] arr, String prefix) {
 		}
 		else
 			l = Math.min(howMany, succ.length) ;
-		
+		System.out.println("in sortSuccessorsByFreq() l = " + l);
 		String[] result = new String[l] ;
 		for (int i = 0; i < l; i++) {
 			result[i] = succ[i].getName() ;
@@ -285,7 +327,7 @@ private int  lastIndexOf(int low, int high, PrefixPair[] arr, String prefix) {
 	
 	// looking for them in corresponding trie
 	private String[] getMatchSuggestions(String prefix, String[] prevMatch, int howMany, String prev) {
-		// TO DO: prevMatch can be null !!!!!!
+		System.out.println("in getMatchSuggestions()");
 		
 		// find corresponding index in tries
 		char firstLetter = prefix.charAt(0) ;
@@ -305,10 +347,17 @@ private int  lastIndexOf(int low, int high, PrefixPair[] arr, String prefix) {
 		
 		// remove overlaps with prevMatch
 		if (prevMatch != null) {
+			System.out.println("prevMatch size is "+ prevMatch.length );
 			for (int i = 0 ; i < prevMatch.length; i++) {
-				if (list.contains(prevMatch[i]))
+				System.out.println("checking if word "+ prevMatch[i] + " is in the list");
+				if (list.contains(prevMatch[i])) {
 					list.remove(prevMatch[i]) ;
+					System.out.println("removed from trie result word "+ prevMatch[i]);
 				}
+			}
+		}
+		else {
+			System.out.println("prevMatch[] is null");
 		}
 		
 		// make PP array for easy sort
