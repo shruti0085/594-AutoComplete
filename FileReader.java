@@ -56,7 +56,7 @@ public class FileReader implements IFileReader {
 	Scanner sc = new Scanner(new File(filename));
 
 	while(sc.hasNext()) {
-	    String line = sc.next().replace(".", " .").replace("!", " !").replace("?", " ?");
+	    String line = sc.next().replace(".", " . ").replace("!", " ! ").replace("?", " ? ");
 	    //above, we add space around the punctuation, so the punc'n can be considered a "word"
 	    String[] tokens = line.split(" ");
 	    for(String token : tokens){
@@ -81,9 +81,9 @@ public class FileReader implements IFileReader {
 	}
     }
 
-    //helper so we don't have to keep saying if x.equals . || ! || ?
+    //helper so we don't have to keep saying if x.equals . || ! || ? || emptystring
     private boolean isPunctuation (String word) {
-	if (word.equals(".") || word.equals("!") || word.equals("?")) return true;
+	if (word.equals(".") || word.equals("!") || word.equals("?") || word.equals("")) return true;
 	return false;
     }
 
