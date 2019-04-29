@@ -1,6 +1,6 @@
-package newAuto;
-
 import java.io.FileNotFoundException;
+
+//import java.io.FileNotFoundException;
 
 /******************************************************************************
  *  Compilation:  javac AutocompleteGUI.java
@@ -87,8 +87,8 @@ public class AutocompleteGUI extends JFrame {
     // for serializable classes
     private static final long serialVersionUID = 1L;
     
-    private static final int DEF_WIDTH  = 850; // width of the GUI window
-    private static final int DEF_HEIGHT = 400; // height of the GUI window
+    private static final int DEF_WIDTH  = 1000; // width of the GUI window
+    private static final int DEF_HEIGHT = 600; // height of the GUI window
 
     // URL prefix for searches
     private static final String SEARCH_URL = "https://www.google.com/search?q=";
@@ -123,6 +123,8 @@ public class AutocompleteGUI extends JFrame {
 
 
         JLabel textLabel = new JLabel("Search query:");
+        textLabel.setFont(
+                textLabel.getFont().deriveFont(Font.PLAIN, 20));
 
         // Define the layout of the window
         layout.setHorizontalGroup(
@@ -204,12 +206,18 @@ public class AutocompleteGUI extends JFrame {
 
             GroupLayout layout = new GroupLayout(this);
             this.setLayout(layout);
-            
+            // create the drop-down menu items
+            int fontsize = 20;
+            int cellHeight = 30;
             // create the search text, and allow the user to interact with it
             searchText = new JTextField(DEF_COLUMNS);
             searchText.setMaximumSize(new Dimension(
                     searchText.getMaximumSize().width, 
                     searchText.getPreferredSize().height));
+            searchText.setFont(
+                    searchText.getFont().deriveFont(Font.PLAIN, fontsize));
+
+            
             searchText.getInputMap().put(
                     KeyStroke.getKeyStroke("UP"),   "none");
             searchText.getInputMap().put(
@@ -231,9 +239,7 @@ public class AutocompleteGUI extends JFrame {
                     BorderFactory.createEmptyBorder(0, 0, 0, 0));
             searchTextPanel.setLayout(new GridLayout(1, 1));
             
-            // create the drop-down menu items
-            int fontsize = 13;
-            int cellHeight = 20;
+           
             
             // suggestions = new JList<String>(results);
             suggestions = new JList(results);
