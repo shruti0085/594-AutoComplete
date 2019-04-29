@@ -81,9 +81,9 @@ public class FileReader implements IFileReader {
 	}
     }
 
-    //helper so we don't have to keep saying if x.equals . || ! || ?
+    //helper so we don't have to keep saying if x.equals . || ! || ? || emptystring
     private boolean isPunctuation (String word) {
-	if (word.equals(".") || word.equals("!") || word.equals("?")) return true;
+	if (word.equals(".") || word.equals("!") || word.equals("?") || word.equals("")) return true;
 	return false;
     }
 
