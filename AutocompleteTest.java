@@ -24,7 +24,7 @@ import org.junit.runners.MethodSorters;
 public class AutocompleteTest {
 	
 	@Test
-	public void testAllPredictions() {  
+	public void testAllPredictions() {   
 		
 		HashMap<String, Integer> wTable = new HashMap<String, Integer>() ;
 		wTable.put("apple", 5) ;
@@ -304,7 +304,7 @@ public class AutocompleteTest {
 	public void test_nSuggestions_Line186() { 
 		
 		HashMap<String, Integer> wTable = new HashMap<String, Integer>() ;
-		wTable.put("apple ", 5) ;
+		wTable.put("apple", 5) ;
 		wTable.put("apply", 2) ;
 		wTable.put("juice", 8) ;
 		wTable.put("pie", 7) ;
@@ -317,63 +317,163 @@ public class AutocompleteTest {
 		appleSuccessors.put("please", 3) ;
 		appleSuccessors.put("pop", 4) ;
 		appleSuccessors.put("pay", 5) ; 
-
-		
-		HashMap<String, Integer> applySuccessors = new HashMap<String, Integer> () ;
-		applySuccessors.put("please", 1) ;
-		applySuccessors.put("all", 4) ;
-		applySuccessors.put("to", 3) ;
-		applySuccessors.put("for", 8) ;
-		applySuccessors.put("on", 3) ;
-
-		
-		HashMap<String, Integer> juiceSuccessors = new HashMap<String, Integer> () ;
-		juiceSuccessors.put("is", 4) ;
-		juiceSuccessors.put("please", 4) ;
-		juiceSuccessors.put("mix", 4) ;
-		juiceSuccessors.put("for", 4) ;
-		juiceSuccessors.put("from", 4) ;
-
-		
-		HashMap<String, Integer> pleaseSuccessors = new HashMap<String, Integer> () ;
-		pleaseSuccessors.put("is", 4) ;
-		pleaseSuccessors.put("please", 4) ;
-		pleaseSuccessors.put("mix", 4) ;
-		pleaseSuccessors.put("for", 4) ;
-		pleaseSuccessors.put("from", 4) ;
-		
-		HashMap<String, Integer> pieSuccessors = new HashMap<String, Integer> () ;
-		pieSuccessors.put("is", 4) ;
-		pieSuccessors.put("please", 4) ;
-		pieSuccessors.put("mix", 4) ;
-		pieSuccessors.put("for", 4) ;
-		pieSuccessors.put("from", 4) ; 
-		
-		HashMap<String, Integer> isSuccessors = new HashMap<String, Integer> () ;
-		isSuccessors.put("apple ", 60) ;
-		isSuccessors.put("juice", 30) ;
-		isSuccessors.put("pie", 10) ;
-		isSuccessors.put("happy", 10) ;
-		isSuccessors.put("green", 10) ;
-		isSuccessors.put("true", 10) ;
 		
 		HashMap<String, HashMap<String, Integer>> successors = new HashMap<>() ;
-		successors.put("apple ", appleSuccessors) ;
-		successors.put("apply", applySuccessors) ;
-		successors.put("juice", juiceSuccessors) ;
-		successors.put("please", pleaseSuccessors) ;
-		successors.put("pie", pieSuccessors) ;
-		successors.put("is", isSuccessors) ;  
-		
-		//getSuggestions
-		//allPredictions 
+		successors.put("apple", appleSuccessors) ;
+
 		String[] result1 = null; 
 		 
 		Autocomplete auto = new Autocomplete(wTable, successors) ; 
-		//PrefixPair[] succ = auto.getSuccessorMap().get("apple"); 
+		result1 = auto.allPredictions("blah blah apple p");  
     
-	}	  
-	 
+	}
+	
+	@Test
+	public void test_isWord_Line244() { 
+		
+		HashMap<String, Integer> wTable = new HashMap<String, Integer>() ;
+		wTable.put("apple", 5) ;
+		wTable.put("apply", 2) ;
+		wTable.put("juice", 8) ;
+		wTable.put("pie", 7) ;
+		wTable.put("please", 10) ;
+		wTable.put("is", 100) ;   
+		
+		HashMap<String, Integer> appleSuccessors = new HashMap<String, Integer> () ;
+		appleSuccessors.put("pear", 1) ;
+		appleSuccessors.put("pie", 2) ;
+		appleSuccessors.put("please", 3) ;
+		appleSuccessors.put("pop", 4) ;
+		appleSuccessors.put("pay", 5) ;  
+		
+		HashMap<String, HashMap<String, Integer>> successors = new HashMap<>() ;
+		successors.put("apple", appleSuccessors) ;
+
+		String[] result1 = null; 
+		 
+		Autocomplete auto = new Autocomplete(wTable, successors) ; 
+		result1 = auto.allPredictions("a");   
+    
+	} 
+	
+	@Test
+	public void test1of2_isWord_elseStatements() { 
+		
+		HashMap<String, Integer> wTable = new HashMap<String, Integer>() ;
+		wTable.put("bike", 5) ;
+		wTable.put("apply", 2) ;
+		wTable.put("juice", 8) ;
+		wTable.put("pie", 7) ;
+		wTable.put("please", 10) ;
+		wTable.put("is", 100) ;   
+		
+		HashMap<String, Integer> bikesuccessors = new HashMap<String, Integer> () ;
+		bikesuccessors.put("chain", 1) ;
+		bikesuccessors.put("derraileur", 2) ;
+		bikesuccessors.put("handlebars", 3) ;
+		bikesuccessors.put("spokes", 4) ;
+		bikesuccessors.put("stem", 5) ;  
+		
+		HashMap<String, HashMap<String, Integer>> successors = new HashMap<>() ;
+		successors.put("bike", bikesuccessors) ;
+
+		String[] res1 = null;
+		String[] res2 = null; 
+		 
+		Autocomplete auto = new Autocomplete(wTable, successors) ;
+		//res2 = auto.allPredictions("bike cha");  
+		res1 = auto.allPredictions("bike .");     
+    
+	}
+//	
+//	@Test
+//	public void test2of2_isWord_elseStatements_line258() { //I can't figure this one out.
+//		
+//		HashMap<String, Integer> wTable = new HashMap<String, Integer>() ;
+//		wTable.put("bike", 5) ;
+//		wTable.put("apply", 2) ;
+//		wTable.put("juice", 8) ;
+//		wTable.put("pie", 7) ;
+//		wTable.put("please", 10) ;
+//		wTable.put("is", 100) ;    
+//		
+//		HashMap<String, Integer> bikesuccessors = new HashMap<String, Integer> () ;
+//		bikesuccessors.put("chain", 1) ;
+//		bikesuccessors.put("derraileur", 2) ;
+//		bikesuccessors.put("handlebars", 3) ;
+//		bikesuccessors.put("spokes", 4) ;
+//		bikesuccessors.put("stem", 5) ;  
+//		
+//		HashMap<String, HashMap<String, Integer>> successors = new HashMap<>() ;
+//		successors.put("bike", bikesuccessors) ;
+//
+//		String[] res1 = null;
+//		 
+//		Autocomplete auto = new Autocomplete(wTable, successors) ;
+//		//res2 = auto.allPredictions("bike cha");  
+//		res1 = auto.allPredictions(" ");       
+//     
+//	}
+	
+	@Test
+	public void test_sortSuccesorsByFreq() { 
+		
+		HashMap<String, Integer> wTable = new HashMap<String, Integer>() ;
+		wTable.put("xray", 1) ; 
+ 
+		
+		HashMap<String, Integer> xraysuccessors = new HashMap<String, Integer> () ;
+		xraysuccessors.put("vision", 1) ;
+
+		
+		HashMap<String, Integer> visionsuccessors = new HashMap<String, Integer> () ;
+		visionsuccessors.put("anomaly", 3) ; 
+		visionsuccessors.put("airplane", 3) ;
+		visionsuccessors.put("after", 3) ;		
+		visionsuccessors.put("through", 3) ;		
+		visionsuccessors.put("inspite", 3) ;	
+		visionsuccessors.put("figure", 3) ;		 
+		
+		HashMap<String, HashMap<String, Integer>> successors = new HashMap<>() ;
+		successors.put("xray", xraysuccessors) ;
+		successors.put("vision", visionsuccessors) ;
+
+		String[] res1 = null;    
+		  
+		Autocomplete auto = new Autocomplete(wTable, successors) ;
+		//res2 = auto.allPredictions("bike cha");  
+		res1 = auto.allPredictions("vision ");                       
+      
+	}  
+	
+	@Test
+	public void getMatchSuggestions() {  
+		 
+		HashMap<String, Integer> wTable = new HashMap<String, Integer>() ;
+		wTable.put("8approach", 1) ;    
+		wTable.put("ask", 1) ;       
+		
+		HashMap<String, Integer> approachsuccessors = new HashMap<String, Integer> () ;
+		approachsuccessors.put("firmly", 5) ;
+		approachsuccessors.put("aggressively", 2) ; 
+
+		
+		HashMap<String, Integer> asksuccessors = new HashMap<String, Integer> () ;
+		asksuccessors.put("for", 3) ; 
+		asksuccessors.put("him", 2) ;  
+		 
+		
+		HashMap<String, HashMap<String, Integer>> successors = new HashMap<>() ;
+		successors.put("8approach", approachsuccessors) ;
+		successors.put("ask", asksuccessors) ;
+
+		String[] res1 = null;    
+		    
+		Autocomplete auto = new Autocomplete(wTable, successors) ;
+		res1 = auto.allPredictions("8approach");                            
+      
+	}    	  
+	   
     /**
      * @throws IllegalStateException
      */
@@ -388,8 +488,11 @@ public class AutocompleteTest {
 		
 		HashMap<String, HashMap<String, Integer>> h2 = null; 
 		
-		Autocomplete b = new Autocomplete(h1, h2);     		        
-    }   
+		//String[] result1 = null;
+		
+		Autocomplete b = new Autocomplete(h1, h2);  
+		//result1 = b.allPredictions("blah blah apple p"); 
+    }    
     
     /**
      * @throws IllegalStateException
@@ -398,7 +501,7 @@ public class AutocompleteTest {
     public void test2of2_Autocomplete_IllegalStateException()
     {
 
-		HashMap<String, Integer> h1 = null;
+		HashMap<String, Integer> h1 = null; 
 		HashMap<String, Integer> appleSuccessors = new HashMap<String, Integer> () ;
 		appleSuccessors.put("juice", 2) ;
 		appleSuccessors.put("pie", 2) ;
@@ -428,7 +531,9 @@ public class AutocompleteTest {
 		successors.put("pie", pieSuccessors) ;
 		successors.put("is", isSuccessors) ; 
 		
-		Autocomplete c = new Autocomplete(h1, successors);      
+		//String[] res = null;
+		Autocomplete c = new Autocomplete(h1, successors);  
+		//res = c.allPredictions("juice ");
 		      
     } 
 

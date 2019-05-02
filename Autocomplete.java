@@ -11,21 +11,21 @@ public class Autocomplete implements IAutocomplete {
 
 	Trie[] tries ;
 	HashMap<String, Integer> wordTable ;
-	HashMap<String, PrefixPair[] > successorMap ;
-	int nSuggestions = 5 ;
+	HashMap<String, PrefixPair[]> successorMap ; 
+	int nSuggestions = 5 ;     
 	
-	public Autocomplete (HashMap<String, Integer> wTable, HashMap<String, HashMap<String, Integer>> successors) {
-		if (wTable == null) 
-			throw new IllegalArgumentException ("word table can not be null");
+	Autocomplete (HashMap<String, Integer> wTable, HashMap<String, HashMap<String, Integer>> successors) {
+		//System.out.println("This is passing in null: " + successors); 
+		if (wTable == null)  
+			throw new IllegalArgumentException ("word table can not be null");   
 		if (successors == null) 
-			throw new IllegalArgumentException ("successor table can not be null");
+			throw new IllegalArgumentException ("successor table can not be null");  
 
 		
 		wordTable = (HashMap<String, Integer>)wTable.clone();  
 		buildTries(wTable) ;
-		buildSuccessorMap(successors) ;
-
-	}
+		buildSuccessorMap(successors) ; 
+	} 
 	
 	private void buildTries(HashMap<String, Integer> wTable) {
 		
@@ -34,7 +34,7 @@ public class Autocomplete implements IAutocomplete {
 		for (String word : wTable.keySet()) {
 			char firstLetter = word.charAt(0) ;
 			int index = (int)firstLetter - 97 ;
-			if ((index>=0) && (index<26)) {
+			if ((index>=0) && (index<26)) {  
 				if (tries[index] == null) 
 					tries[index] = new Trie(firstLetter) ;
 				tries[index].insert(word) ;
@@ -55,8 +55,13 @@ public class Autocomplete implements IAutocomplete {
 	
 	private void buildSuccessorMap(HashMap<String, HashMap<String, Integer>> before) {
 
-		if (before == null)
-			return ; // throw something?
+		/**
+		 * I took this validation out to get code coverage becausebuildSuccessorMap()
+		 * called within Auto constructor, so nullpointer and illegalState are taken
+		 * care of there.  No need to test inside buildSuccessMapAgain.
+		 * if (before == null)
+		 * return ;
+		 */    
 		
 		successorMap = new HashMap<String, PrefixPair[]>() ;
 		for (String word : before.keySet()) {
@@ -64,13 +69,14 @@ public class Autocomplete implements IAutocomplete {
 			PrefixPair[] arrScsrs = convertToPrefixPair(hashScsrs) ;
 			// sort lexicographically
 			Arrays.sort(arrScsrs);
-			if (word.equals("to")) {
-				System.out.println("successors for to ") ;
-				for (int i = 0; i < arrScsrs.length; i++)
-					System.out.println(arrScsrs[i].getName()) ;
+			if (word.equals("to")) { 
+				//System.out.println("successors for to ") ;
+				for (int i = 0; i < arrScsrs.length; i++) {
+					//System.out.println(arrScsrs[i].getName()) ;
+				} 
 			}
 				
-			successorMap.put(word, arrScsrs) ;
+			successorMap.put(word, arrScsrs) ;  
 		}
 		
 //		PrefixPair[] getsrs = successorMap.get("to") ;
@@ -97,19 +103,20 @@ public class Autocomplete implements IAutocomplete {
 			arrScsrs[i] = new PrefixPair(s, hashScsrs.get(s)) ;
 			i++ ;
 		}
-		return arrScsrs ;
+		return arrScsrs ;  
 	}
 	
 	@Override
-	public String[] allPredictions(String input) {
+	public String[] allPredictions(String input) { 
 		// if input is empty, return empty array
 		if (input.equals("")) 
-			return new String[0] ;
+			return new String[0] ; 
 		
 		String spaced = input.replace(".", " . ").replace("!", " ! ").replace("?", " ? ").replace(",", " , ");
 		
-		if (!isWord(spaced))
-			return new String[0] ;
+		//System.out.println("This is line 117 spaced: " + spaced);
+		if (!isWord(spaced)) 
+			return new String[0] ;       
 		
 		// tokenize input (watch out if length is 1)
 		String[] tokens = input.split(" ");
@@ -128,7 +135,7 @@ public class Autocomplete implements IAutocomplete {
 			// sort them in descending order of frequency
 			String[] result = new String[0] ;
 			
-			if (succ != null) {
+			if (succ != null) {    
 				// make copy of succ
 				PrefixPair[] succCopy = Arrays.copyOf( succ, succ.length);
 				result = sortSuccessorsByFreq(succCopy, -1) ;
@@ -152,27 +159,35 @@ public class Autocomplete implements IAutocomplete {
 			// get successor suggestions for prev
 			PrefixPair[] prevMatches = successorMap.get(prev) ;
 			
-			// out of them get only those that start with prefix word
+//			for ( PrefixPair p: prevMatches) {
+//				System.out.println("This is prefix pair: " + p.getName());
+//			} 
+			 
+			// out of them get only those that start with prefix word  
 			// find first index of PP that  starts with prefix
 			if (prevMatches != null) {
-				System.out.println("successors of prev word (before sorting by freq)  "+prev);
+				//System.out.println("successors of prev word (before sorting by freq)  "+prev);
 				for (int i = 0; i < prevMatches.length; i++) {
-					System.out.println(prevMatches[i].getName());
+					//System.out.println(prevMatches[i].getName());
 				}
 				int first = firstIndexOf(0, prevMatches.length-1, prevMatches, word) ;
 				// find last index of PP that  starts with prefix
 				int last = lastIndexOf(0, prevMatches.length-1, prevMatches, word) ;
-				System.out.println("first index is  "+first+" last index is "+last);
+				//System.out.println("first index is  "+first+" last index is "+last);
 			
 				if ((first != -1) && (last != -1)) {
 					PrefixPair[] sPrevMatches = Arrays.copyOfRange(prevMatches, first, last+1) ;
-					System.out.println("sPrevMatches has size "+sPrevMatches.length);
+					//System.out.println("sPrevMatches has size "+sPrevMatches.length);
 					result1 = sortSuccessorsByFreq(sPrevMatches, -1) ;
-					System.out.println("result1 got assigned and has size "+result1.length);
-					l = result1.length ;
+					for (int y = 0; y < result1.length; y++) {
+						System.out.println(result1[y]); 
+					}
+					//System.out.println("result1 got assigned and has size "+result1.length); 
+					l = result1.length ; 
 					// check if we already found enough
+
 					if (l == nSuggestions)
-						return result1 ;
+						return result1 ;                  
 				}
 			}
 		}	
@@ -180,21 +195,21 @@ public class Autocomplete implements IAutocomplete {
 		int remainder = nSuggestions - l ;
 			
 		if ((result1 != null)&&(result1.length != 0)) {
-			System.out.println("successors of prev word (after sorting by freq "+prev);
-			for (int i = 0; i < result1.length; i++) {
-				System.out.println(result1[i]);
+			//System.out.println("successors of prev word (after sorting by freq "+prev);
+			for (int i = 0; i < result1.length; i++) { 
+				//System.out.println(result1[i]);
 			}
 		}
 		String[] result2 = getMatchSuggestions(word, result1, remainder, prev) ;
 		
 		if (result2.length != 0) {
-			System.out.println("results from trie for word  "+word);
+			//System.out.println("results from trie for word  "+word);
 			for (int i = 0; i < result2.length; i++) {
-				System.out.println(result2[i]);
+				//System.out.println(result2[i]);
 			}
 		}
 		
-		// combine results 1 and 2
+		// combine results 1 and 2 
 		int newLen = 0 ;
 		if (result1 != null)
 			newLen = result1.length + result2.length ;
@@ -216,7 +231,7 @@ public class Autocomplete implements IAutocomplete {
 	}
 	
 	// is last input word or punctuation?
-	private boolean isWord(String input) {
+	private boolean isWord(String input) { 
 		if ((input == null) || (input.equals(""))) {
 			return false ;
 		}
@@ -225,39 +240,41 @@ public class Autocomplete implements IAutocomplete {
 		
 		int len = input.length() ;
 		if (len == 1) {
-			if (Character.isLetter(input.charAt(0))) 
-				return true ;
+			if (Character.isLetter(input.charAt(0)))  
+				return true ;     
 			else 
-				return false ;
-		}
-		
-		else {
-			if (Character.isLetter(input.charAt(len-1)))
+				return false ; 
+		} else {
+			
+			if (Character.isLetter(input.charAt(len-1))) {
 				return true ;
-			else if (Character.isSpaceChar(input.charAt(len-1))) {
+			} else if (Character.isSpaceChar(input.charAt(len-1))) {
 				// check if the one before is a letter
 				if (Character.isLetter(input.charAt(len-2)))
 					return true ;
 				else
-					return false ;
+					return false ;    
+			} else {
+				return false ;         
 			}
-			else
-				return false ;
 		}
-
 	}
 	
 	private int  firstIndexOf(int low, int high, PrefixPair[] arr, String prefix) {
 		// arr is empty
 		if (high == -1)
-			return -1 ;
-		
+			return -1 ; 
+		//System.out.println("This is Low and High" + low + high);
 		if (low == high) {
-			if (((prefix.length() <= arr[low].getName().length())) && (arr[low].getName().substring(0, prefix.length()).equals(prefix))) 
-				return low;
-			else return -1;
-        }
-		
+			if (((prefix.length() <= arr[low].getName().length())) && (arr[low].getName().substring(0, prefix.length()).equals(prefix))) { 
+				//System.out.println((prefix.length() <= arr[low].getName().length()));
+				//System.out.println((arr[low].getName().substring(0, prefix.length()).equals(prefix)));
+				return low; 
+			} else {
+				return -1;         
+			}
+        } 
+		  
 		else {
             int middle = (low + high) / 2;
             
@@ -269,7 +286,7 @@ public class Autocomplete implements IAutocomplete {
 
 	}
 	
-private int  lastIndexOf(int low, int high, PrefixPair[] arr, String prefix) {
+	private int  lastIndexOf(int low, int high, PrefixPair[] arr, String prefix) {
 	// arr is empty
 		if (high == -1)
 			return -1 ;
@@ -278,8 +295,8 @@ private int  lastIndexOf(int low, int high, PrefixPair[] arr, String prefix) {
             //if (arr[low].getName().substring(0, prefix.length()).equals(prefix)) 
 			if (((prefix.length() <= arr[low].getName().length())) && (arr[low].getName().substring(0, prefix.length()).equals(prefix)))
             	return low;
-            else return -1;
-        }
+            else return -1; 
+        } 
 		
 		if ((high-low) == 1) {
 			
@@ -303,21 +320,25 @@ private int  lastIndexOf(int low, int high, PrefixPair[] arr, String prefix) {
 	}
 	
 	private String[] sortSuccessorsByFreq(PrefixPair[] succ, int howMany) {
-		System.out.println("in sortSuccessorsByFreq()");
+//		System.out.println("How Many: " + howMany);
+//		for (PrefixPair p : succ) {
+//			System.out.println(p.getName());
+//		}
 		Comparator<PrefixPair> comparator = PrefixPair.byFreq();
 		Arrays.sort(succ, comparator);
 		
 		// make a String array of necessary size and return it
 		int l ;
-		if (howMany == -1) {
-			if (succ.length > nSuggestions)
-				l = nSuggestions ;
-			else 
-				l = succ.length ;
-		}
+		//System.out.println("Line 332: " + succ.length + " " + nSuggestions);
+		if (howMany == -1) { 
+			if (succ.length > nSuggestions) 
+				l = nSuggestions ;         
+			else  
+				l = succ.length ; 
+		} 
 		else
 			l = Math.min(howMany, succ.length) ;
-		System.out.println("in sortSuccessorsByFreq() l = " + l);
+		//System.out.println("in sortSuccessorsByFreq() l = " + l);
 		String[] result = new String[l] ;
 		for (int i = 0; i < l; i++) {
 			result[i] = succ[i].getName() ;
@@ -327,59 +348,69 @@ private int  lastIndexOf(int low, int high, PrefixPair[] arr, String prefix) {
 	
 	// looking for them in corresponding trie
 	private String[] getMatchSuggestions(String prefix, String[] prevMatch, int howMany, String prev) {
-		System.out.println("in getMatchSuggestions()");
+		//System.out.println("in getMatchSuggestions()");
 		
 		// find corresponding index in tries
-		char firstLetter = prefix.charAt(0) ;
+		char firstLetter = prefix.charAt(0) ; 
 		int index = (int)firstLetter - 97 ;
 		
 		if ((index < 0) || (index > 25)) // if first char is not letter
-			return new String[0] ;       // we can't help
+			return new String[0] ;       // we can't help          
 	
 		ArrayList<String> list = tries[index].listOfPredictions(prefix) ;
-		if (list == null) return new String[0] ; 
+		if (list == null) return new String[0] ;  
 		
 		// if list has word "prev", remove it
 		if ((prev != null) && (list.contains(prev)))
-			list.remove(prev) ;
+			list.remove(prev) ; 
 		
 	
 		
 		// remove overlaps with prevMatch
 		if (prevMatch != null) {
-			System.out.println("prevMatch size is "+ prevMatch.length );
+			//System.out.println("prevMatch size is "+ prevMatch.length );
 			for (int i = 0 ; i < prevMatch.length; i++) {
-				System.out.println("checking if word "+ prevMatch[i] + " is in the list");
+				//System.out.println("checking if word "+ prevMatch[i] + " is in the list");
 				if (list.contains(prevMatch[i])) {
 					list.remove(prevMatch[i]) ;
-					System.out.println("removed from trie result word "+ prevMatch[i]);
+					//System.out.println("removed from trie result word "+ prevMatch[i]);
 				}
 			}
 		}
 		else {
-			System.out.println("prevMatch[] is null");
+			//System.out.println("prevMatch[] is null");
 		}
 		
 		// make PP array for easy sort
 		PrefixPair[] pArr = new PrefixPair[list.size()] ;
 		boolean successfulTrieResult = true ;
-		int i = 0 ;
-		for (String w : list) {
+		int i = 0 ;  
+		for (String w : list) {  
+			System.out.println("This is String inside the Prefix Pair:" + w); 
 			
 			if (wordTable.get(w) != null) {
 				int fr =  wordTable.get(w);
-				pArr[i] = new PrefixPair(w, fr) ;
+				pArr[i] = new PrefixPair(w, fr) ; 
 				i ++ ;
-			}
-			else {
+			} else {  
 				System.out.println("couldn't find word " + w + " return from trie search");
-				successfulTrieResult = false ;
-			}
+				successfulTrieResult = false ;              
+			}  
 		}
 		
-		if (successfulTrieResult) return sortSuccessorsByFreq (pArr, howMany) ;
-		else return new String[0] ;
-
+		if (successfulTrieResult) {
+			return sortSuccessorsByFreq (pArr, howMany) ;
+		} else {
+			return new String[0] ;     
+		}
+ 
 	}
+
+	public HashMap<String, PrefixPair[]> getSuccessorMap() {
+		return successorMap;
+	}
+
+	
+	
 
 }
