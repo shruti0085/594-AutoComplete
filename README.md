@@ -25,11 +25,6 @@
 ### Autocomplete Algorithm
 Our autocomplete algorithm is based largely off of the frequency with which a given word shows up in a Data Set and all the possible words that follow a prefix entered by the user. More broadly, a word's likelihood of being suggested by our BATSMobile as an acceptable successor to a user input is definined by whether or not there are enough successors given it's frequency in the data set following a prefix and if our Trie Tree Data Structure can fill in suggestions for all the possible words if there's not enough suggestions.  
 
-1. Given some text passed by the user, parse the text into individual tokens and add a part of speech tag. (For our purposes, tokens were just single words and seperating punctuation. Multi-word tokens were not considered for simplicity.) 
-2. For each token, if the token is a non-comparator adjective, adverb, singular non-pronoun noun, or verb, query the DataMuse API and return the 5 most similar synonyms (according to the DataMuse similarity score)
-3. Find the synonym that has the highest complexity score that is the same part of speech and meets a minimum similarity score to the original word. If this synonym's complexity exceeds the original word's complexity, substitute the synonym.
-4. Return the resulting set of text once all tokens have been considered for substitution.
-
 ## Design
 Our package involves several classes, whose relationship and summary can be found in the UML diagram below. Further details also follow.
 
