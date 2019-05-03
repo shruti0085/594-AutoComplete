@@ -1,8 +1,7 @@
 <img src="https://github.com/shruti0085/594-AutoComplete/blob/master/Media/shield-only-RGB-4k.png" align="left" width="60" hieght="60"> <img src="https://github.com/shruti0085/594-AutoComplete/blob/master/Media/icon.png" align="right" />
 
 
-# Autocomplete BATSMobile
-## The Becca Alex Tierra Shruti - Model
+# Autocomplete 
 
 ### Running The Program
 0. Make sure you have Latest JDK installed on your machine.
