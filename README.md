@@ -11,15 +11,17 @@ BATSMo autocompletor - The "Becca Alex Tierra Shruti"- Model<br>
 2. Run `java AutocompleteGUI.java <NameOfTextFile.txt>` in command line... that's it!  The GUI should pop up! Example: %java AutocompleteGUI StarWarsEpisodeV.txt
 3. If you would rather use an IDE or do not have javac installed, make sure you have Eclipse IDE installed on your machine, have a JUnit 4 or 5 testing set up in your build path, and have a working internet connection.
 4. Find `run` in the top ribbon of Eclipse and select `run configurations`.  In the next pop-up window go the tab that says `arguments` and in program arguments type the name of the file you choose to train on. 
-   - We'll get you started.  Try some of these very entertaining .txt files we added to our repo:
+   - We'll get you started.  Try some of these very entertaining .txt files we have included:
    
-      > [Star Wars Episode IV](https://github.com/shruti0085/594-AutoComplete/blob/master/StarWarsEpisodeIV.txt)
+      > Star Wars Episode IV (StarWarsEpisodeIV.txt)
       
-      > [Star Wars Episode V](https://github.com/shruti0085/594-AutoComplete/blob/master/StarWarsEpisodeV.txt)
+      > Star Wars Episode V (StarWarsEpisodeV.txt)
       
-      > [The Fault in our Stars!](https://github.com/shruti0085/594-AutoComplete/blob/master/fault.txt)
+      > Fifty Shades of Grey (50shades.txt)
       
-      > [Catcher in the Rye](https://github.com/shruti0085/594-AutoComplete/blob/master/catcher.txt)
+      > The Fault in our Stars (fault.txt)
+      
+      > The Catcher in the Rye (catcher.txt)
 
 5. Using the GUI: Please use mouse click to select the words from the suggested ones. If you press "enter" instead, previously typed string will disappear. Note that GUI was implemented by the third party which was allowed by Dr. Fouh.
       
