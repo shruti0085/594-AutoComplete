@@ -29,12 +29,3 @@ BATSMo autocompletor - The "Becca Alex Tierra Shruti"- Model<br>
 
 ### Autocomplete Algorithm
 Our autocomplete algorithm is based largely off of the frequency with which a given word shows up in a Data Set and all the possible words that follow a prefix entered by the user. More broadly, a word's likelihood of being suggested by our BATSMobile autocompletor as an acceptable successor to user input is defined by whether or not there are enough successors given it's frequency in the data following a prefix and if our Trie Tree Data Structure can fill in suggestions for all the possible words if there's not enough suggestions.  
-
-## Design
-Our package involves several classes, whose relationship and summary can be found in the UML diagram below. Further details also follow.
-
-### UML Diagram 
-
-Feel free to scroll to view whole diagram or download PDF by [clicking here](https://github.com/shruti0085/594-AutoComplete/blob/master/Media/UML_Diagram.pdf)
-
-![BATSMO UML](https://github.com/shruti0085/594-AutoComplete/blob/master/Media/Autocomplete%20UML_cropped.png)
