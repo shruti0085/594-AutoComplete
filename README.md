@@ -24,7 +24,7 @@
 ## Implementation Details
 
 ### Autocomplete Algorithm
-Our autocomplete algorithm is based largely off of the frequency with which a given word shows up in a Data Set and all the possible words that follow a prefix entered by the user. More broadly, a word's likelihood of being suggested by our BATSMobile as an acceptable successor to a user input is definined by whether or not there are enough successors given it's frequency in the data set following a prefix and if our Trie Tree Data Structure can fill in suggestions for all the possible words if there's not enough suggestions.  
+Our autocomplete algorithm is based largely off of the frequency with which a given word shows up in a Data Set and all the possible words that follow a prefix entered by the user. More broadly, a word's likelihood of being suggested by our BATSMobile as an acceptable successor to a user input is definined by whether or not there are enough successors given it's frequency in the data following a prefix and if our Trie Tree Data Structure can fill in suggestions for all the possible words if there's not enough suggestions.  
 
 ## Design
 Our package involves several classes, whose relationship and summary can be found in the UML diagram below. Further details also follow.
