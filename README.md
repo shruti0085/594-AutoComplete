@@ -4,7 +4,7 @@
 # Autocomplete 
 
 ### Running The Program
-0. Make sure you have Latest JDK installed on your machine.
+0. Make sure you have Latest JDK (Java Compiler) installed on your machine.  Run javac -version in your command line to ensure you have the latest version.  If you do not have Javac skip to Step 3.
 1. Add the zipped contents on this repo above to a local folder (go to top right Clone-or-Download button in green to download zip file).  `cd` into your working directory
 2. Run `Javac AutocompleteGUI.java <NameOfTextFile.txt>` in command line... that's it!  The GUI should pop up!
 3. If you would rather use an IDE, make sure you have Eclipse IDE installed on your machine, have a JUnit 4 testing set up in your build path, and have a working internet connection.
