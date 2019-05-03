@@ -5,7 +5,7 @@
 
 ### Running The Program
 0. Make sure you have Eclipse IDE installed on your machine, have a JUnit 4 testing set up in your build path, and have a working internet connection.
-1. Add the zipped contents on this repo above to a local folder.  `cd` into your working directory
+1. Add the zipped contents on this repo above to a local folder (go to top right Clone-or-Download button in green to download zip file).  `cd` into your working directory
 2. Run `AutocompleteGUI.java` in command line... that's it!  The GUI should pop up!
 3. If you would rather use an IDE, go to your Eclipse IDE, find `run` in the top ribbon and select `run configurations`.  In the next pop-up window go the tab that says `arguments` and in program arguments type the name of the file you choose to train on. 
    - We'll get you started.  Try some of these very entertaining .txt files we added to our repo:
