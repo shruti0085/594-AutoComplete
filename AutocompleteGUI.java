@@ -1,5 +1,3 @@
-import java.io.FileNotFoundException;
-
 /******************************************************************************
  *  Compilation:  javac AutocompleteGUI.java
  *  Execution:    java  AutocompleteGUI input.txt k
@@ -8,56 +6,41 @@ import java.io.FileNotFoundException;
  *  @author Matthew Drabick
  *  @author Ming-Yee Tsang
  *  @author Andrew Ward
+ *  Modifications for our more generic version of Autocomplete are made by 
+ *  Alexandra Rumyantseva and Shruti Sinha
  *    
- *  Interactive GUI used to demonstrate the Autocomplete data type.
- *
- *     * Reads a list of terms and weights from a file, specified as a
+ *	   * Interactive GUI used to demonstrate the Autocomplete data type.
+ *  	 Builds Autocomplete object from a text file, specified as a
  *       command-line argument.
  *
- *     * As the user types in a text box, display the top-k terms
- *       that start with the text that the user types.
+ *     * As the user types in a text box, display the top-5 terms
+ *       that start with the text that the user types and looking at 
+ *       the previous word.
  *
  *     * Displays the result in a browser if the user selects a term
- *       (by pressing enter, clicking a selection, or pressing the
- *       "Search Google" button).
- *
- *
- *  BUG: Search bar and suggestion drop-down don't resize properly with window;
- *       they stay the same size when the window gets wider, and the weights 
- *       get hidden when the window gets smaller.
- *  
- *  FEATURE: make weights be in left column instead of right column ?
- *           (to match toString() and output format of test client on assignment)
- *
+ *       (by clicking a selection).
+
  *  NOTE: You will receive a compiler warning in Java 7 (and above).
  *        This is for backward compatibility with Java 6 (because JList
  *        was not retrofitted to support generics until Java 7).
  *
  *
- *  % java AutocompleteGUI cities.txt 10
+ *  % java AutocompleteGUI StarWarsEpisodeV.txt
  *
  ******************************************************************************/
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Desktop;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -65,8 +48,6 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.GroupLayout;
 import javax.swing.BorderFactory;
@@ -79,7 +60,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.MouseInputAdapter;
 
-//import edu.princeton.cs.algs4.In;
 
 public class AutocompleteGUI extends JFrame {
     // for serializable classes
@@ -121,6 +101,9 @@ public class AutocompleteGUI extends JFrame {
 
 
         JLabel textLabel = new JLabel("Search query:");
+        
+        textLabel.setFont(
+        		textLabel.getFont().deriveFont(Font.PLAIN, 20));
 
         // Define the layout of the window
         layout.setHorizontalGroup(
@@ -168,11 +151,6 @@ public class AutocompleteGUI extends JFrame {
                                                   // the suggestion drop-down below the
                                                   // last suggestion
 
-        // Note: can't use JList<String> in Java 6
-
-        // TODO: change how this is implemented so it is dynamic; 
-        // shouldn't have to define a column number.
-        
         // Keep these next two values in sync! - used to keep the search box 
         // the same width as the drop-down
         // DEF_COLUMNS should be the number of characters in suggListLen
@@ -203,11 +181,16 @@ public class AutocompleteGUI extends JFrame {
             GroupLayout layout = new GroupLayout(this);
             this.setLayout(layout);
             
+            int fontsize = 20 ;
+            int cellHeight = 30 ;
+            
             // create the search text, and allow the user to interact with it
             searchText = new JTextField(DEF_COLUMNS);
             searchText.setMaximumSize(new Dimension(
                     searchText.getMaximumSize().width, 
                     searchText.getPreferredSize().height));
+            searchText.setFont(
+            		searchText.getFont().deriveFont(Font.PLAIN, fontsize));
             searchText.getInputMap().put(
                     KeyStroke.getKeyStroke("UP"),   "none");
             searchText.getInputMap().put(
@@ -230,8 +213,6 @@ public class AutocompleteGUI extends JFrame {
             searchTextPanel.setLayout(new GridLayout(1, 1));
             
             // create the drop-down menu items
-            int fontsize = 13;
-            int cellHeight = 20;
             
             // suggestions = new JList<String>(results);
             suggestions = new JList(results);
@@ -263,7 +244,6 @@ public class AutocompleteGUI extends JFrame {
                         searchText.setText(selection);
                         getSuggestions(selection+" ");
                     }
-                    //searchOnline(searchText.getText());
                 }  
             };
             Action moveSelectionUp =  new AbstractAction() {
@@ -318,7 +298,7 @@ public class AutocompleteGUI extends JFrame {
                     KeyStroke.getKeyStroke("UP"), "moveSelectionUpFocused");
             suggestions.getActionMap().put(
                     "moveSelectionUpFocused", moveSelectionUpFocused);
-            suggestions.getActionMap().put("makeSelection", makeSelection);
+            suggestions.getActionMap().put("makeSelection", makeSelection); 
 
             // Create the suggestion drop-down panel and scroll bar
             suggestionsPanel = new JPanel();
@@ -375,7 +355,6 @@ public class AutocompleteGUI extends JFrame {
                                     searchText.setText(current+selection+" ");
                                     String text = selection ; //searchText.getText();
                                     getSuggestions(text+" ");
-                                    //searchOnline(searchText.getText());
                                 }
                             }
                         }
@@ -397,23 +376,6 @@ public class AutocompleteGUI extends JFrame {
                     });
             suggestions.addMouseMotionListener(
                     new MouseInputAdapter() {
-                        @Override
-                        
-                        // Google a term when a user clicks on the dropdown menu
-                        public void mouseClicked(MouseEvent mouseEvent) {
-                            JList theList = (JList) mouseEvent.getSource();
-                            if (mouseEvent.getClickCount() >= 1) {
-                                int index = theList.locationToIndex(
-                                        mouseEvent.getPoint()); 
-                                if (index >= 0) {
-                                    String selection = getSelectedText(); // adds space
-                                    searchText.setText(selection);
-                                    String text = selection ; //searchText.getText();
-                                    getSuggestions(text);
-                                    //searchOnline(searchText.getText());
-                                }
-                            }
-                        }
 
                         @Override
                         public void mouseEntered(MouseEvent mouseEvent) {
@@ -532,16 +494,12 @@ public class AutocompleteGUI extends JFrame {
                 scrollPane.setVisible(false);
             }
             else {
-                int textLen = text.length();
 
                 // get all matching terms
                 String[] allResults = auto.allPredictions(text);
                 System.out.println("allResults is of size  " + allResults.length) ;
                 for (int i = 0; i < allResults.length; i++ ) {
                 	System.out.println("allResults at " + i + " is " + allResults[i]) ;
-                }
-                if (allResults == null) {
-                    throw new NullPointerException("allMatches() is null");
                 }
 
                 results = new String[Math.min(k, allResults.length)];
@@ -555,28 +513,15 @@ public class AutocompleteGUI extends JFrame {
                             throw new NullPointerException("allMatches() "
                                     + "returned an array with a null entry");
                         }
-//                        int tab = next.indexOf('\t');
-//                        if (tab < 0) {
-//                            throw new RuntimeException("allMatches() returned"
-//                                    + " an array with an entry without a tab:"
-//                                    + " '" + next + "'");
-//                        }
-                        //String weight = next.substring(0, tab).trim();
-                        String weight = "0" ;
-                        //String query  = next.substring(tab);
-                        String query  = next;
 
-                        // truncate length if needed
-//                        if (query.length() > suggListLen.length())
-//                            query = query.substring(0, suggListLen.length());
+                        String weight = "0" ;
+                        String query  = next;
 
                         // create the table HTML 
                         results[i] = "<html><table width=\"" 
                                 + searchText.getPreferredSize().width + "\">"
                                 + "<tr><td align=left>" 
-                                //+ query.substring(0, textLen )
                                 + query
-                                //+ "<b>" + query.substring(textLen ) + "</b>";
                                 + "<b>" + "" + "</b>";
                         if (displayWeights) {
                             results[i] += "<td width=\"10%\" align=right>"
@@ -622,8 +567,6 @@ public class AutocompleteGUI extends JFrame {
     /**
      * Creates an AutocompleteGUI object and start it continuously running
      * @param args the filename from which the Autocomplete object is populated
-     * and the integer k which defines the maximum number of objects in the 
-     * dropdown menu
      */
     public static void main(String[] args) {
         final String filename = args[0];
