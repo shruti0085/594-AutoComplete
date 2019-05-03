@@ -7,7 +7,7 @@ BATSMo autocompletor - The "Becca Alex Tierra Shruti"- Model<br>
 
 ### Running The Program
 0. Make sure you have Latest JDK (Java Compiler) installed on your machine.  Run `javac -version` in your command line to ensure you have the latest version.  If you do not have Javac skip to Step 3.
-1. Add the zipped contents on this repo above to a local folder (go to top right Clone-or-Download button in green to download zip file).  `cd` into your working directory
+1. Add the zipped contents to a local folder and `cd` into your working directory
 2. Run `java AutocompleteGUI.java <NameOfTextFile.txt>` in command line... that's it!  The GUI should pop up! Example: %java AutocompleteGUI StarWarsEpisodeV.txt
 3. If you would rather use an IDE or do not have javac installed, make sure you have Eclipse IDE installed on your machine, have a JUnit 4 or 5 testing set up in your build path, and have a working internet connection.
 4. Find `run` in the top ribbon of Eclipse and select `run configurations`.  In the next pop-up window go the tab that says `arguments` and in program arguments type the name of the file you choose to train on. 
