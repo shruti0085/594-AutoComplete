@@ -20,8 +20,10 @@ BATSMo autocompletor - The "Becca Alex Tierra Shruti"- Model<br>
       > [The Fault in our Stars!](https://github.com/shruti0085/594-AutoComplete/blob/master/fault.txt)
       
       > [Catcher in the Rye](https://github.com/shruti0085/594-AutoComplete/blob/master/catcher.txt)
+
+5. Using the GUI: Please use mouse click to select the words from the suggested ones. If you press "enter" instead, previously typed string will disappear. Note that GUI was implemented by the third party which was allowed by Dr. Fouh.
       
-4. (Optional) Run Unit tests. You can do this before step 1 or at any point, to make sure things are functioning properly. Simply run the `AutocompleteTest.java` from the IDE.
+6. (Optional) Run Unit tests. You can do this before step 1 or at any point, to make sure things are functioning properly. Simply run the `AutocompleteTest.java` from the IDE.
 
 ## Implementation Details
 
