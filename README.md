@@ -4,6 +4,8 @@
 # Autocomplete 
 BATSMo autocompletor - The "Becca Alex Tierra Shruti"- Model
 
+
+
 ### Running The Program
 0. Make sure you have Latest JDK (Java Compiler) installed on your machine.  Run `javac -version` in your command line to ensure you have the latest version.  If you do not have Javac skip to Step 3.
 1. Add the zipped contents on this repo above to a local folder (go to top right Clone-or-Download button in green to download zip file).  `cd` into your working directory
