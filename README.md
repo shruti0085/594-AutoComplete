@@ -2,7 +2,7 @@
 
 
 # Autocomplete 
-BATSMo autocompletor - The "Becca Alex Tierra Shruti"- Model<br/>
+BATSMo autocompletor - The "Becca Alex Tierra Shruti"- Model<br>
 
 
 ### Running The Program
