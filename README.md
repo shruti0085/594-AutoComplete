@@ -4,10 +4,11 @@
 # BATSMobile "The Becca Alex Tierra Shruti - Model"
 
 ### Running The Program
-0. Make sure you have Eclipse IDE installed on your machine, have a JUnit 4 testing set up in your build path, and have a working internet connection.
+0. Make sure you have Latest JDK installed on your machine.
 1. Add the zipped contents on this repo above to a local folder (go to top right Clone-or-Download button in green to download zip file).  `cd` into your working directory
-2. Run `AutocompleteGUI.java` in command line... that's it!  The GUI should pop up!
-3. If you would rather use an IDE, go to your Eclipse IDE, find `run` in the top ribbon and select `run configurations`.  In the next pop-up window go the tab that says `arguments` and in program arguments type the name of the file you choose to train on. 
+2. Run `Javac AutocompleteGUI.java <NameOfTextFile.txt>` in command line... that's it!  The GUI should pop up!
+3. If you would rather use an IDE, make sure you have Eclipse IDE installed on your machine, have a JUnit 4 testing set up in your build path, and have a working internet connection.
+4. Find `run` in the top ribbon of Eclipse and select `run configurations`.  In the next pop-up window go the tab that says `arguments` and in program arguments type the name of the file you choose to train on. 
    - We'll get you started.  Try some of these very entertaining .txt files we added to our repo:
    
       > [Star Wars Episode IV](https://github.com/shruti0085/594-AutoComplete/blob/master/StarWarsEpisodeIV.txt)
