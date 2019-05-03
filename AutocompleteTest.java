@@ -1,15 +1,13 @@
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import java.lang.reflect.Executable;
 import java.util.HashMap;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class AutocompleteTest {
+public class AutocompleteTest { 
 
 	@Test
-	void testAllPredictions() {
+	public void testAllPredictions() {
 		HashMap<String, Integer> wTable = new HashMap<String, Integer>() ;
 		wTable.put("apple", 5) ;
 		wTable.put("apply", 2) ;
@@ -227,6 +225,5 @@ class AutocompleteTest {
 		}
 		catch (IllegalArgumentException e) {}
 	}
-
 
 }
